@@ -1,2 +1,400 @@
-# DALIA_REPO
-DALIA es un asistente de IA para DEI construido con Thinkstack y desplegado en WordPress. Este repositorio documenta cómo preparar y parsear documentos con LlamaParse, limpiar y parametrizar CSV, configurar el modelo en Thinkstack, evitar sesgos y realizar la integración mediante iframe.
+# DALIA – Asistente de IA para DEI (RAG con Thinkstack + WordPress)
+
+DALIA es un asistente conversacional especializado en Diversidad, Equidad e Inclusión (DEI) diseñado para empresas colombianas.  
+Este documento describe **cómo replicar DALIA**, desde la preparación de la información (curaduría, parsing, limpieza de datos) hasta la integración final en WordPress mediante iframe.
+
+---
+
+## 1. Arquitectura General del Sistema
+
+DALIA se construye únicamente con:
+
+Datos (CSV + PDFs DEI + normativa)
+↓
+Curaduría y Parsing (LlamaParse, limpieza, normalización)
+↓
+Thinkstack AI (RAG + base documental + diseño del asistente)
+↓
+Código de integración <iframe>
+↓
+WordPress (interfaz visible al usuario)
+
+## 2. Requisitos Previos
+
+### 2.1. Cuentas
+- Thinkstack AI (para chatbot y RAG).
+- WordPress (para publicar el chatbot).
+
+### 2.2. Insumos necesarios
+- **Documentos de DEI** del cliente:
+  - Manuales internos.
+  - Políticas de inclusión.
+  - Programas de bienestar.
+  - Guías de selección y reclutamiento.
+- **Normativa colombiana**:
+  - Leyes mas actualizadas.
+  - Resoluciones del Ministerio de Trabajo.
+  - Documentos oficiales sobre no discriminación laboral.
+- **Bases de datos CSV**:
+  - Estructura de personal.
+  - Salarios.
+  - Antigüedad.
+  - Encuestas internas.
+
+---
+
+## 3. Curaduría Documental (Documentos DEI + Normativa)
+
+Antes de subir información a Thinkstack es crítico hacer **curaduría** para evitar ruido en el modelo.
+
+### 3.1. Selección de documentos
+Elegir únicamente archivos que incluyan:
+
+- Información oficial y vigente.
+- Políticas aplicables a procesos de inclusión laboral.
+- Normativa colombiana relacionada con:
+  - Igualdad salarial.
+  - Acceso al empleo.
+  - Accesibilidad.
+  - Medidas antidiscriminación.
+
+Documentos no relevantes (presentaciones, material comercial, duplicados) deben **excluirse**.
+
+---
+
+## 4. Parsing profesional de PDFs (LlamaParse)
+
+Muchos documentos vienen con:
+
+- Diagramas
+- Flujos de procesos
+- Imágenes insertadas
+- Tablas no estructuradas
+- Elementos visuales que rompen el texto
+
+Para que Thinkstack pueda entenderlos, deben procesarse con una herramienta de Parsing, se recomienda **LlamaParse**.
+
+### 4.1. Objetivo del parsing
+- Convertir PDFs complejos en texto estructurado.
+- Extraer tablas a formato legible.
+- Eliminar ruido visual.
+- Mantener jerarquías, títulos y numeración.
+
+### 4.2. Flujo de trabajo recomendado
+1. Subir PDF a LlamaParse.
+2. Exportar como `.md` o `.txt` estructurado.
+3. Revisar manualmente:
+   - Coherencia del orden de lectura.
+   - Tablas correctamente parseadas.
+   - Que no falte información legal.
+4. Subir el documento parseado a Thinkstack en lugar del PDF original.
+
+> Esto mejora drásticamente la precisión del RAG.
+
+## 5. Preparación de Bases de Datos (CSV)
+
+Thinkstack no admite CSV con columnas irregulares o datos inconsistentes.  
+Hay que preparar los archivos antes de subirlos.
+
+### 5.1. Pasos indispensables
+
+#### 1) **Limpieza**
+- Eliminar filas vacías.
+- Unificar formatos de fecha.
+- Convertir salarios a valores numéricos.
+- Homologar categorías de cargo.
+- Convertir textos tipo "H"/"M"/"hombre"/"mujer" a una sola convención.
+
+#### 2) **Normalización y parametrización**
+Todas las columnas deben tener nombres **estandarizados**, sin carácteres especiales ni espacios (en lugar de espacio usar "_"). Ejemplo:
+
+| Columna            | Descripción breve (≤150 caracteres)                  |
+|--------------------|------------------------------------------------------|
+| `Sexo`             | Sexo declarado: Hombre o Mujer                       |
+| `Nivel_de_Gestion` | Clasificación interna del cargo                      |
+| `Salario`          | Salario mensual neto o bruto según dataset           |
+| `Antiguedad_dias`  | Tiempo total en la empresa (en días)                 |
+| `Edad`             | Edad del colaborador                                 |
+| `Ultimo_Cargo_Dias`| Tiempo en el cargo actual                            |
+
+#### 3) **Verificación**
+Asegurar:
+
+- Que no hay columnas duplicadas.
+- Que todas las filas tienen el mismo número de columnas.
+- Que Thinkstack pueda interpretarlas sin error (ver límites abajo).
+
+---
+## 6. Límites y consideraciones de Thinkstack
+
+### 6.1. Tamaños máximos
+- Documentos demasiado grandes deben dividirse.
+- CSVs muy pesados deben subirse por partes o reducirse.
+
+### 6.2. Tipos de contenido que Thinkstack NO interpreta bien
+- PDFs escaneados sin OCR.
+- Imágenes de tablas.
+- Gráficos de flujo incrustados.
+
+(De ahí la importancia del **parsing** previo.)
+
+### 6.3. RAG mínimo
+Mientras más limpio y estructurado esté el dataset:
+
+- Mejor responde DALIA.
+- Menos alucina.
+- Más consistente es el análisis.
+
+---
+
+## 7. Configuración del Chatbot en Thinkstack
+
+### 7.1. Prompt del sistema (evitar sesgos)
+
+Se recomienda incluir:
+
+- Tono neutral, profesional e incluyente.
+- Evitar lenguaje discriminatorio.
+- Evitar sesgos de género en ejemplos.
+- Priorizar normativa colombiana.
+
+El prompt del agente se divide en:
+
+#### 1) **agent_persona**:
+  descripcion: >
+    Experta en Diversidades humanas, Equidad de género e Inclusión laboral y
+    comunitaria en Colombia, con experiencia en políticas públicas, inclusión
+    y enfoque de género, diferencial e interseccional. Ofrece respuestas claras,
+    prácticas y fundamentadas, priorizando la utilidad y la acción.
+  principios_de_uso:
+    - Usa marcos de la OIT, ONU, OCDE y leyes colombianas solo cuando se solicite
+      o sea estrictamente indispensable.
+    - Mantiene enfoque de derechos humanos y no discriminación.
+    - Se apega siempre al contexto colombiano.
+  objetivo: >
+    Garantizar que DALIA responda de forma técnica, contextualizada, libre de sesgos
+    y basada en la información suministrada por los documentos y datasets cargados.
+
+#### 2) **guidelines_respuestas**:
+  objetivo_general: >
+    Ofrecer orientación y análisis especializado en DEI en el contexto colombiano,
+    combinando rigor técnico con lenguaje incluyente, claro, accesible y respetuoso.
+    Responder siempre en español, basándose en derechos humanos y en la evidencia
+    académica disponible.
+
+  formato_obligatorio:
+    - Idea central – breve resumen introductorio del tema.
+    - Desarrollo – argumentos, explicaciones, ejemplos o casos relevantes.
+    - Referencia normativa o fuente (solo si se solicita explícitamente) – citar leyes,
+      políticas o documentos recientes.
+    - Conclusión o recomendación final.
+
+  tono:
+    - Amable, respetuoso, profesional y empático.
+    - Culturalmente sensible al contexto colombiano.
+    - Reconoce diversidad étnica, cultural, social, de género y capacidad.
+    - Aplica enfoque interseccional.
+    - Evita neutralidad que normalice discriminación.
+    - Formula preguntas solo cuando es imprescindible y justifica la necesidad.
+
+  estructura_y_claridad:
+    - Comenzar siempre con una idea central clara.
+    - Usar párrafos separados y coherentes.
+    - Evitar tecnicismos innecesarios o explicarlos cuando se utilicen.
+    - Adaptar lenguaje para públicos diversos (RH, líderes, equipos comunitarios).
+
+  contextualizacion:
+    - Referenciar leyes y políticas públicas de Colombia cuando sea pertinente.
+    - Reconocer la existencia de grupos poblacionales protegidos.
+    - Sugerir anonimización en caso de recibir o analizar datos sensibles.
+
+  fuentes_y_transparencia:
+    - Consultar siempre la base documental y datasets internos cargados en Thinkstack.
+    - Citar documentos por nombre, institución, autor y año si la referencia se solicita.
+    - Priorizar artículos revisados por pares, informes técnicos, organismos multilaterales
+      y centros de investigación reconocidos.
+    - Indicar si el acceso a la información fue limitado.
+    - Marcar traducciones automáticas cuando aplique.
+
+  lenguaje_inclusivo:
+    - Usar expresiones inclusivas como “personas con discapacidad”, “personas LGBTIQ+”.
+    - Evitar masculino genérico y estereotipos por género, edad, origen étnico,
+      discapacidad u otra condición.
+    - Evitar metáforas o ejemplos que impliquen jerarquías de género.
+
+  reconocimiento_de_limites:
+    - En temas controvertidos, presentar varias perspectivas sin tomar partido.
+    - Si no existe evidencia suficiente, indicarlo explícitamente.
+    - Evitar información no verificada o especulativa.
+    - En temas legales o médicos, ofrecer orientación general y sugerir consulta profesional.
+    - Prevenir alucinaciones del modelo mediante precisión en el contenido.
+
+---
+
+## 8. Integración con WordPress
+
+wordpress_integracion:
+  descripcion_general: >
+    Antes de insertar el iframe del chatbot generado por Thinkstack, es necesario
+    preparar el entorno de WordPress para asegurar compatibilidad, seguridad y
+    correcta visualización del asistente DALIA. Esta sección describe los pasos
+    previos, la integración del código y la verificación final.
+
+  pasos_previos_en_wordpress:
+    verificar_roles_permisos:
+      descripcion: >
+        Asegurarse de tener permisos de administrador o editor con capacidad
+        para crear páginas, insertar código HTML y usar plugins como Code Snippets
+        o constructores visuales. Sin estos permisos, la integración no podrá completarse.
+      acciones:
+        - Confirmar rol de usuario actual en WordPress.
+        - Verificar que la instalación permite contenido embebido (iframes).
+
+    revisar_tema_y_constructor:
+      descripcion: >
+        Revisar si el sitio usa un constructor (Elementor, Divi, Gutenberg) para
+        determinar dónde se insertará el iframe. Algunos temas limitan HTML directo
+        o requieren módulos específicos para contenido embebido.
+      recomendaciones:
+        - Si se usa Elementor → habilitar el widget HTML.
+        - Si se usa Gutenberg → habilitar bloque HTML personalizado.
+        - Si el tema restringe iframes → usar Code Snippets como alternativa.
+
+    habilitar_https:
+      descripcion: >
+        El iframe de Thinkstack funciona correctamente solo si el sitio WordPress
+        está configurado en HTTPS. De lo contrario, el navegador bloqueará el contenido.
+      acciones:
+        - Verificar que el dominio esté en https://
+        - Activar plugin “Really Simple SSL” si es necesario.
+
+    crear_pagina_contenedor:
+      descripcion: >
+        Antes de incrustar el chatbot, se recomienda crear una página dedicada
+        que actuará como contenedor principal del asistente DALIA.
+      pasos:
+        - Ir al Panel → Páginas → “Añadir nueva”.
+        - Asignar título sugerido: “DALIA – Asistente DEI”.
+        - Publicar la página aun sin contenido.
+      notas:
+        - Evitar plantillas con barras laterales o restricciones de ancho.
+        - Preferir plantilla “Full Width” o “Canvas”.
+
+  integracion_iframe:
+    obtener_iframe_desde_thinkstack: >
+      Desde la sección “Embed / Inline” en Thinkstack AI, copiar el iframe
+      correspondiente al chatbot DALIA. Debería de verse algo así:
+      <iframe src="https://app.thinkstack.ai/bot/index.html?chatbot_id=xxxx&type=inline"
+      frameborder="0" width="100%" height="100%" style="min-height: 500px;"></iframe>
+
+    metodos_de_insercion:
+      metodo_1_bloque_html:
+        descripcion: >
+          Ideal para sitios con Gutenberg o constructores modernos. Consiste en
+          pegar el iframe directamente en la página creada previamente.
+        pasos:
+          - Editar la página contenedora.
+          - Insertar bloque “HTML personalizado”.
+          - Pegar el iframe proporcionado por Thinkstack.
+          - Actualizar y visualizar.
+
+      metodo_2_elementor:
+        descripcion: >
+          Utilizar el widget “HTML” de Elementor para incrustar el iframe con total
+          control sobre estilos, márgenes y estructura visual.
+        pasos:
+          - Abrir la página en Elementor.
+          - Arrastrar el widget “HTML”.
+          - Pegar el iframe.
+          - Ajustar altura mínima o padding.
+
+      metodo_3_code_snippets_con_shortcode:
+        descripcion: >
+          Recomendado cuando el tema bloquea iframes o se requiere reutilizar el
+          chatbot en varias páginas. Se crea un shortcode que devuelve el iframe.
+        snippet_php: |
+          function dalia_chatbot() {
+              return '<iframe
+                  src="https://app.thinkstack.ai/bot/index.html?chatbot_id=xxxx&type=inline"
+                  frameborder="0"
+                  width="100%"
+                  height="100%"
+                  style="min-height: 500px;"></iframe>';
+          }
+          add_shortcode('dalia', 'dalia_chatbot');
+        uso:
+          - Insertar en cualquier página con: [dalia]
+
+  verificacion_final:
+    pruebas_recomendadas:
+      - Probar carga del chatbot desde un navegador en incógnito.
+      - Confirmar que no existan errores de contenido mixto HTTP/HTTPS.
+      - Realizar una pregunta simple y verificar respuesta desde Thinkstack.
+      - Validar que el iframe responde bien en dispositivos móviles.
+
+    posibles_errores_y_soluciones:
+      error_iframe_bloqueado: >
+        Los navegadores pueden bloquear iframes si el sitio no usa HTTPS.
+        Solución: habilitar SSL completo.
+      error_contenido_no_visible: >
+        Algunos temas aplican overflow:hidden. Ajustar CSS o usar plantilla full-width.
+      error_pagina_vacia: >
+        Revisar que el iframe se haya pegado en modo HTML, no visual.
+
+## 9. Validación Final
+### 9.1. Pruebas de funcionamiento
+
+Probar consultas vinculadas a normativa colombiana para validar contextualización.
+
+Realizar análisis de brecha salarial con datos reales para comprobar interpretación correcta de CSV y coherencia del modelo.
+
+Probar preguntas generales de DEI para verificar estabilidad del comportamiento.
+
+### 9.2. Criterios de revisión de respuestas
+
+Coherencia con la normativa colombiana y políticas públicas.
+
+Ausencia de alucinaciones o información no verificada.
+
+Uso efectivo del RAG y de los documentos cargados.
+
+Respeto por los principios del persona y las guidelines configuradas.
+
+## 10. Mantenimiento
+### 10.1. Actualización de datos
+
+Actualizar la información cuando existan cambios en nómina, estructuras salariales o políticas de la empresa.
+
+Subir nuevas versiones de documentos y normativas cuando sean modificadas o reemplazadas.
+
+### 10.2. Revisión de procesamiento documental
+
+Revisar y parsear nuevamente documentos complejos antes de cargarlos en Thinkstack.
+
+Verificar que los nuevos documentos cumplen con el estándar de legibilidad requerido.
+
+### 10.3. Gestión de datasets
+
+Documentar cambios en columnas o estructura de los CSV.
+
+Revisar que los parámetros y formatos permanezcan consistentes para evitar confusión del modelo.
+
+### 10.4. Control de calidad del chatbot
+
+Revisar periódicamente las respuestas generadas.
+
+Ajustar prompts, guidelines o estructura si aparecen desviaciones, sesgos o inconsistencias.
+
+## 11. Conclusión
+
+DALIA es un sistema que depende directamente de:
+
+La calidad, claridad y estructura de los datos cargados.
+
+Un pipeline robusto de curaduría, parsing y normalización documental.
+
+Una configuración precisa del persona, las guidelines y el RAG dentro de Thinkstack.
+
+Cuando estos elementos se mantienen, DALIA ofrece respuestas consistentes, contextualizadas y alineadas con los principios de DEI en Colombia.
+
+
