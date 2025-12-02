@@ -1,13 +1,13 @@
-# DALIA – Asistente de IA para DEI (RAG con Thinkstack + WordPress)
+# Asistente de IA para DEI (RAG con Thinkstack + WordPress)
 
 DALIA es un asistente conversacional especializado en Diversidad, Equidad e Inclusión (DEI) diseñado para empresas colombianas.  
-Este documento describe **cómo replicar DALIA**, desde la preparación de la información (curaduría, parsing, limpieza de datos) hasta la integración final en WordPress mediante iframe.
+Este documento describe **cómo replicar una IA con enfoque DEI**, desde la preparación de la información (curaduría, parsing, limpieza de datos) hasta la integración final en WordPress mediante iframe.
 
 ---
 
 ## 1. Arquitectura General del Sistema
 
-DALIA se construye únicamente con:
+La IA con enfoque DEI se construye únicamente con:
 
 Datos (CSV + PDFs DEI + normativa)
 ↓
@@ -243,7 +243,7 @@ Esto permite integrarlo fácilmente en pipelines más grandes (ETL, ingestion RA
 ### 6.3. RAG mínimo
 Mientras más limpio y estructurado esté el dataset:
 
-- Mejor responde DALIA.
+- Mejor responde la IA.
 - Menos alucina.
 - Más consistente es el análisis.
 
@@ -274,7 +274,7 @@ El prompt del agente que se ha usado en Dalia se divide en:
     - Mantiene enfoque de derechos humanos y no discriminación.
     - Se apega siempre al contexto colombiano.
   objetivo: >
-    Garantizar que DALIA responda de forma técnica, contextualizada, libre de sesgos
+    Garantizar que la IA responda de forma técnica, contextualizada, libre de sesgos
     y basada en la información suministrada por los documentos y datasets cargados.
 
 #### 2) **guidelines_respuestas**:
@@ -339,7 +339,7 @@ wordpress_integracion:
   descripcion_general: >
     Antes de insertar el iframe del chatbot generado por Thinkstack, es necesario
     preparar el entorno de WordPress para asegurar compatibilidad, seguridad y
-    correcta visualización del asistente DALIA. Esta sección describe los pasos
+    correcta visualización del asistente IA con enfoque DEI. Esta sección describe los pasos
     previos, la integración del código y la verificación final.
 
   pasos_previos_en_wordpress:
@@ -376,7 +376,7 @@ wordpress_integracion:
         que actuará como contenedor principal del asistente DALIA.
       pasos:
         - Ir al Panel → Páginas → “Añadir nueva”.
-        - Asignar título sugerido: “DALIA – Asistente DEI”.
+        - Asignar título sugerido: “Asistente DEI”.
         - Publicar la página aun sin contenido.
       notas:
         - Evitar plantillas con barras laterales o restricciones de ancho.
@@ -385,7 +385,7 @@ wordpress_integracion:
   integracion_iframe:
     obtener_iframe_desde_thinkstack: >
       Desde la sección “Embed / Inline” en Thinkstack AI, copiar el iframe
-      correspondiente al chatbot DALIA. Debería de verse algo así:
+      correspondiente al agente IA creado en thinkstack. Debería de verse algo así:
       <iframe src="https://app.thinkstack.ai/bot/index.html?chatbot_id=xxxx&type=inline"
       frameborder="0" width="100%" height="100%" style="min-height: 500px;"></iframe>
 
@@ -423,7 +423,6 @@ wordpress_integracion:
                   height="100%"
                   style="min-height: 500px;"></iframe>';
           }
-          add_shortcode('dalia', 'dalia_chatbot');
         uso:
           - Insertar en cualquier página con: [dalia]
 
@@ -489,7 +488,7 @@ Ajustar prompts, guidelines o estructura si aparecen desviaciones, sesgos o inco
 
 ## 11. Conclusión
 
-DALIA es un sistema que depende directamente de:
+El asistente IA con enfoque DEI es un sistema que depende directamente de:
 
 La calidad, claridad y estructura de los datos cargados.
 
@@ -497,7 +496,7 @@ Un pipeline robusto de curaduría, parsing y normalización documental.
 
 Una configuración precisa del persona, las guidelines y el RAG dentro de Thinkstack.
 
-Cuando estos elementos se mantienen, DALIA ofrece respuestas consistentes, contextualizadas y alineadas con los principios de DEI en Colombia.
+Cuando estos elementos se mantienen, el asistente IA ofrece respuestas consistentes, contextualizadas y alineadas con los principios de DEI en Colombia.
 
 ## 12. Glosario Técnico
 ### Agente (Agent)
@@ -506,7 +505,7 @@ Entidad basada en IA configurada para actuar con un propósito específico. Un a
 
 ### Asistente (Assistant)
 
-Interfaz conversacional que permite al usuario interactuar con un agente. En este proyecto, DALIA es el asistente que recibe preguntas y produce respuestas basadas en su configuración y datos cargados.
+Interfaz conversacional que permite al usuario interactuar con un agente. En este proyecto, El chatbot IA es el asistente que recibe preguntas y produce respuestas basadas en su configuración y datos cargados.
 
 ### Curaduría de documentos
 
@@ -542,7 +541,7 @@ Proceso mediante el cual un documento complejo (PDF, imagen, tabla incrustada, e
 
 ### Persona (Agent Persona)
 
-Identidad profesional asignada al agente que define su perspectiva, tono y área de experticia. En DALIA, el persona es una experta en DEI con enfoque en Colombia.
+Identidad profesional asignada al agente que define su perspectiva, tono y área de experticia. En el asistente IA, el persona es una experta en DEI con enfoque en Colombia.
 
 ### Pipeline
 
@@ -554,7 +553,7 @@ Técnica donde el modelo busca información relevante en los documentos previame
 
 ### Thinkstack
 
-Plataforma utilizada en este proyecto para construir el chatbot DALIA. Proporciona gestión de documentos, RAG, configuración del agente, interfaz de conversación y generación del iframe para integración en WordPress.
+Plataforma utilizada en este proyecto para construir el chatbot. Proporciona gestión de documentos, RAG, configuración del agente, interfaz de conversación y generación del iframe para integración en WordPress.
 
 ### Token
 
