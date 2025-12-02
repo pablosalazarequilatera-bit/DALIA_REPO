@@ -91,6 +91,63 @@ Para que Thinkstack pueda entenderlos, deben procesarse con una herramienta de P
 
 > Esto mejora drásticamente la precisión del RAG.
 
+### 4.3 Flujo de trabajo para un parsing masivo con LLamaParse
+Este script permite convertir automáticamente múltiples documentos (PDF, DOCX, PPTX, etc.) de una carpeta a JSON o Markdown usando la API de LlamaParse.
+
+Es la forma recomendada para generar datasets limpios para RAG.
+
+✔️ Requisitos previos
+
+Instalar dependencias:
+
+pip install llama-parse llama-index python-dotenv
+
+
+Configurar tu API Key:
+
+export LLAMA_CLOUD_API_KEY="TU_API_KEY"
+
+
+En Windows (PowerShell):
+
+$env:LLAMA_CLOUD_API_KEY="TU_API_KEY"
+
+✔️ ¿Qué hace?
+
+Recibe una carpeta con documentos
+
+Envía cada archivo a LlamaParse
+
+Descarga la versión parseada:
+
+JSON → estructura + metadata + texto
+
+MD → texto plano para ingestion inmediata en RAG
+
+Guarda los resultados en otra carpeta
+
+▶️ Cómo usarlo desde terminal
+python batch_llamaparse.py \
+  --input_dir ./docs_raw \
+  --output_dir ./docs_parsed \
+  --format md
+
+
+Formatos disponibles:
+
+json → ideal para RAG avanzado, extracción de tablas, metadata
+
+md → ideal para ingestion rápida en vector stores
+
+▶️ Cómo integrarlo en un flujo de Python
+from batch_llamaparse import batch_parse
+
+batch_parse(
+    input_dir="docs_raw",
+    output_dir="docs_parsed",
+    output_format="md"
+)
+
 ## 5. Preparación de Bases de Datos (CSV)
 
 Thinkstack no admite CSV con columnas irregulares o datos inconsistentes.  
@@ -125,6 +182,51 @@ Asegurar:
 - Que Thinkstack pueda interpretarlas sin error (ver límites abajo).
 
 ---
+### 5.2) Ejemplo de Pipeline general de limpieza de datos en python usando ej_data_cleaning.py
+
+Este codigo permite realizar una limpieza estandarizada sobre archivos CSV antes de ser usados en análisis o ingestion en un sistema RAG.
+
+✔️ ¿Qué hace?
+
+Carga el CSV
+
+Estandariza nombres de columnas
+
+Elimina columnas 100% nulas
+
+Genera reporte de valores faltantes
+
+Imputa nulos (numéricos y categóricos)
+
+Elimina duplicados
+
+Convierte tipos de datos
+
+Maneja outliers con IQR (capado o eliminación)
+
+Guarda el archivo limpio
+
+▶️ Cómo usarlo desde terminal
+python ej_data_cleaning.py \
+  --input ruta/dataset.csv \
+  --output ruta/dataset_limpio.csv
+
+
+Parámetros opcionales:
+
+--sep ";"
+--encoding "latin-1"
+
+▶️ Cómo usarlo desde otro script de Python
+from data_cleaning_template import clean_dataset
+
+df_limpio = clean_dataset(
+    path_in="data/raw.csv",
+    path_out="data/clean.csv"
+)
+
+
+Esto permite integrarlo fácilmente en pipelines más grandes (ETL, ingestion RAG, etc.).
 ## 6. Límites y consideraciones de Thinkstack
 
 ### 6.1. Tamaños máximos
