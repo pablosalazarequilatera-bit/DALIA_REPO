@@ -1,4 +1,16 @@
-# Asistente de IA para DEI (RAG con Thinkstack + WordPress)
+# Asistente de IA para Diversidad, Equidad e Inclusión
+Documentación técnica · Arquitectura · Preparación de datos · Despliegue
+
+⚠️ Autoría
+
+Este proyecto y su documentación fueron desarrollados por
+la AFD – Agence Française de Développement
+y se publican como open-source para uso, adaptación y desarrollo por parte de la comunidad.
+
+“Tecnología abierta al servicio de la equidad y la inclusión.”
+
+
+## Asistente de IA para DEI (RAG con Thinkstack + WordPress)
 
 DALIA es un asistente conversacional especializado en Diversidad, Equidad e Inclusión (DEI) diseñado para empresas colombianas.  
 Este documento describe **cómo replicar una IA con enfoque DEI**, desde la preparación de la información (curaduría, parsing, limpieza de datos) hasta la integración final en WordPress mediante iframe.
