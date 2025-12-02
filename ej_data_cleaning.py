@@ -1,6 +1,4 @@
 """
-data_cleaning_template.py
--------------------------
 Plantilla general para procesos de limpieza de datos en Python con pandas.
 
 Uso básico desde terminal:
