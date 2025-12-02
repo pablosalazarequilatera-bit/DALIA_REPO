@@ -158,7 +158,7 @@ Se recomienda incluir:
 - Evitar sesgos de género en ejemplos.
 - Priorizar normativa colombiana.
 
-El prompt del agente se divide en:
+El prompt del agente que se ha usado en Dalia se divide en:
 
 #### 1) **agent_persona**:
   descripcion: >
@@ -396,5 +396,74 @@ Un pipeline robusto de curaduría, parsing y normalización documental.
 Una configuración precisa del persona, las guidelines y el RAG dentro de Thinkstack.
 
 Cuando estos elementos se mantienen, DALIA ofrece respuestas consistentes, contextualizadas y alineadas con los principios de DEI en Colombia.
+
+## 12. Glosario Técnico
+### Agente (Agent)
+
+Entidad basada en IA configurada para actuar con un propósito específico. Un agente combina un persona, un conjunto de instrucciones (guidelines) y acceso a fuentes de datos para responder de manera consistente y especializada.
+
+### Asistente (Assistant)
+
+Interfaz conversacional que permite al usuario interactuar con un agente. En este proyecto, DALIA es el asistente que recibe preguntas y produce respuestas basadas en su configuración y datos cargados.
+
+### Curaduría de documentos
+
+Proceso de selección, filtrado y organización de la documentación que será utilizada por el modelo. Incluye eliminar redundancias, priorizar versiones actuales y asegurar relevancia temática.
+
+### Dataset
+
+Conjunto de datos estructurados (por ejemplo, CSV) utilizados por el modelo para análisis cuantitativos, como brechas salariales, estructura organizacional o perfiles laborales.
+
+### Embedding
+
+Representación numérica de textos utilizada por modelos de IA para calcular similitud semántica. Es la base del funcionamiento del RAG.
+
+### Guidelines
+
+Conjunto de reglas formales que definen cómo debe responder el agente: formato, tono, estructura, límites y comportamiento ético. Aseguran consistencia y control sobre el modelo.
+
+### Iframe
+
+Elemento HTML que permite insertar contenido externo dentro de un sitio web (en este caso, Thinkstack dentro de WordPress).
+
+### LlamaParse
+
+Herramienta de parsing impulsada por IA que permite extraer texto estructurado a partir de PDFs complejos que contienen tablas, diagramas, flujos u otros elementos no lineales.
+
+### LLM (Large Language Model)
+
+Modelo de lenguaje avanzado capaz de comprender y generar texto natural. DALIA utiliza un LLM dentro de Thinkstack para responder preguntas basadas en datos y documentos cargados.
+
+### Parsing
+
+Proceso mediante el cual un documento complejo (PDF, imagen, tabla incrustada, etc.) se convierte en texto estructurado legible por un modelo de IA. Es esencial cuando los documentos contienen tablas, flujos o contenido no lineal.
+
+### Persona (Agent Persona)
+
+Identidad profesional asignada al agente que define su perspectiva, tono y área de experticia. En DALIA, el persona es una experta en DEI con enfoque en Colombia.
+
+### Pipeline
+
+Conjunto ordenado de pasos técnicos necesarios para preparar datos antes de cargarlos al sistema: curaduría, parsing, normalización y documentación.
+
+### RAG (Retrieval-Augmented Generation)
+
+Técnica donde el modelo busca información relevante en los documentos previamente cargados y luego genera una respuesta fundamentada. Permite que un LLM responda usando datos específicos de una organización.
+
+### Thinkstack
+
+Plataforma utilizada en este proyecto para construir el chatbot DALIA. Proporciona gestión de documentos, RAG, configuración del agente, interfaz de conversación y generación del iframe para integración en WordPress.
+
+### Token
+
+Unidad mínima de texto que los LLM procesan (palabras o partes de palabras). Los límites de token influyen en cuánta información puede analizar el modelo en una sola respuesta.
+
+### Vectorización
+
+Transformación de documentos o fragmentos de texto en vectores numéricos para ser indexados y comparados por similitud dentro del sistema RAG.
+
+### WordPress
+
+CMS (Content Management System) utilizado para desplegar DALIA mediante la inserción del iframe generado por Thinkstack.
 
 
