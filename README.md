@@ -272,7 +272,7 @@ Se recomienda incluir:
 - Evitar sesgos de género en ejemplos.
 - Priorizar normativa colombiana.
 
-El prompt del agente que se ha usado en Dalia se divide en:
+El prompt del agente que se ha usado se divide en:
 
 #### 1) **agent_persona**:
   descripcion: >
@@ -385,7 +385,7 @@ wordpress_integracion:
     crear_pagina_contenedor:
       descripcion: >
         Antes de incrustar el chatbot, se recomienda crear una página dedicada
-        que actuará como contenedor principal del asistente DALIA.
+        que actuará como contenedor principal del asistente IA.
       pasos:
         - Ir al Panel → Páginas → “Añadir nueva”.
         - Asignar título sugerido: “Asistente DEI”.
@@ -427,7 +427,7 @@ wordpress_integracion:
           Recomendado cuando el tema bloquea iframes o se requiere reutilizar el
           chatbot en varias páginas. Se crea un shortcode que devuelve el iframe.
         snippet_php: |
-          function dalia_chatbot() {
+          function IA_chatbot() {
               return '<iframe
                   src="https://app.thinkstack.ai/bot/index.html?chatbot_id=xxxx&type=inline"
                   frameborder="0"
@@ -436,7 +436,6 @@ wordpress_integracion:
                   style="min-height: 500px;"></iframe>';
           }
         uso:
-          - Insertar en cualquier página con: [dalia]
 
   verificacion_final:
     pruebas_recomendadas:
@@ -545,7 +544,7 @@ Herramienta de parsing impulsada por IA que permite extraer texto estructurado a
 
 ### LLM (Large Language Model)
 
-Modelo de lenguaje avanzado capaz de comprender y generar texto natural. DALIA utiliza un LLM dentro de Thinkstack para responder preguntas basadas en datos y documentos cargados.
+Modelo de lenguaje avanzado capaz de comprender y generar texto natural. El asistente IA utiliza un LLM dentro de Thinkstack para responder preguntas basadas en datos y documentos cargados.
 
 ### Parsing
 
@@ -577,6 +576,6 @@ Transformación de documentos o fragmentos de texto en vectores numéricos para 
 
 ### WordPress
 
-CMS (Content Management System) utilizado para desplegar DALIA mediante la inserción del iframe generado por Thinkstack.
+CMS (Content Management System) utilizado para desplegar El asistente IA enfocado en DEI mediante la inserción del iframe generado por Thinkstack.
 
 
