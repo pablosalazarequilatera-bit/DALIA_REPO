@@ -52,6 +52,9 @@ WordPress (interfaz visible al usuario)
   - Salarios.
   - Antigüedad.
   - Encuestas internas.
+ 
+  **Link de base de datos estandar DEI, proporcionada por EQ:** https://drive.google.com/drive/folders/12C2_yJ-MFbIoEl1ur9Ps2IxgdsSvDpE8?usp=sharing
+  Nota: esta base de datos requiere de una depuración y revisión para el modelo.
 
 ---
 
